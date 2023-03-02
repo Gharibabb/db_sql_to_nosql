@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
-from db_connection import db, match_information, match_events, match_line_ups, match_player_statistics, match_team_statistics, pre_match_information
+from db_connection import db, match_information, match_events, match_line_ups, match_player_statistics, match_team_statistics
 from bson.objectid import ObjectId
 import pandas as pd
 
@@ -22,6 +22,7 @@ def get_players():
 def get_nb_blessures():
     nb_blessures = { "$group" : {"_id" : "$RoundName", "totalBlessures" : { "$sum" : "$InjuryTime" }} }
     aggregate = list(match_information.aggregate([nb_blessures]))
+    print(a[0])
     return render_template("player.html",player=aggregate)
 
 
@@ -64,7 +65,7 @@ def get_goal():
     #Trouvez les joueurs qui ont marqué un but contre l'équipe tenante du titre (Portugal) 
     #pendant la phase de groupes.  
 
-    aggregate = list(pre_match_information.aggregate([
+    aggregate = list(match_information.aggregate([
             {"$match":{"$or": [{"HomeTeamName": 'Portugal', "IsAwayTeam": True },
                         { "AwayTeamName": 'Portugal', "IsHomeTeam": True}
                         ],
