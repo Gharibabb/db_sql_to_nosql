@@ -1,3 +1,5 @@
+Mise en place de l'environnement virtuel : python3 -m venv venv
+
 Activer l'environnement virtuel python : .\venv\Scripts\Activate.ps1
 
 Lancer le serveur : flask run
